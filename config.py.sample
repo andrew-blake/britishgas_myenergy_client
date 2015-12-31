@@ -1,0 +1,5 @@
+USERNAME = 'email@address.com'
+PASSWORD = ''
+PROXIES = None
+DEBUG = False
+SSL_VERIFY = True
