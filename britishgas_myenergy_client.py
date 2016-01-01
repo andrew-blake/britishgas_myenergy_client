@@ -188,38 +188,21 @@ class MyEnergyClient(MyEnergyBase):
         fp.close()
         print("Wrote: %s" % filename)
 
-    def get_usage_by_month_daily(self):
+    def _get_usage(self, interval, year, month, day):
+        params = dict(interval=interval, year=year, month=month, day=day)
+        url = 'https://www.britishgas.co.uk/myenergy_prod/api/usage/%(interval)s/%(year)d-%(month)02d-%(day)02d' % params
+        self._save_url(url)
 
-        urls = [
-            # 'https://www.britishgas.co.uk/myenergy_prod/api/usage/year/2015-01-01',
-            'https://www.britishgas.co.uk/myenergy_prod/api/usage/month/2015-12-01',
-            'https://www.britishgas.co.uk/myenergy_prod/api/usage/month/2015-11-01',
-            'https://www.britishgas.co.uk/myenergy_prod/api/usage/month/2015-10-01',
-            'https://www.britishgas.co.uk/myenergy_prod/api/usage/month/2015-09-01',
-            'https://www.britishgas.co.uk/myenergy_prod/api/usage/month/2015-08-01',
-            'https://www.britishgas.co.uk/myenergy_prod/api/usage/month/2015-07-01',
-            'https://www.britishgas.co.uk/myenergy_prod/api/usage/month/2015-06-01',
-            'https://www.britishgas.co.uk/myenergy_prod/api/usage/month/2015-05-01',
-            'https://www.britishgas.co.uk/myenergy_prod/api/usage/month/2015-04-01',
-            'https://www.britishgas.co.uk/myenergy_prod/api/usage/month/2015-03-01',
-            'https://www.britishgas.co.uk/myenergy_prod/api/usage/month/2015-02-01',
-            'https://www.britishgas.co.uk/myenergy_prod/api/usage/month/2015-01-01',
-            # 'https://www.britishgas.co.uk/myenergy_prod/api/usage/day/2015-12-30',
-            # 'https://www.britishgas.co.uk/myenergy_prod/api/usage/week/2015-12-20',
-            # 'https://www.britishgas.co.uk/myenergy_prod/api/usage/week/2015-12-27',
-        ]
+    def get_usage_by_day_hourly(self, d):
+        self._get_usage('day', d.year, d.month, d.day)
 
-        for url in urls:
-            self._save_url(url)
+    def get_usage_by_month_daily(self, d):
+        # force first day of month
+        self._get_usage('month', d.year, d.month, 1)
 
-    def get_usage_by_year_monthly(self):
-
-        urls = [
-            'https://www.britishgas.co.uk/myenergy_prod/api/usage/year/2015-01-01',
-        ]
-
-        for url in urls:
-            self._save_url(url)
+    def get_usage_by_year_monthly(self, d):
+        # force first day of year
+        self._get_usage('year', d.year, 1, 1)
 
     def get_nectar_details(self):
         url = 'https://www.britishgas.co.uk/mobile/Nectar/Summary'
