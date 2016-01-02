@@ -204,6 +204,14 @@ class MyEnergyClient(MyEnergyBase):
         # force first day of year
         self._get_usage('year', d.year, 1, 1)
 
+    def get_user_details(self):
+        url = 'https://www.britishgas.co.uk/myenergy_prod/api/user'
+        self._save_url(url)
+
+    def get_premise_details(self):
+        url = 'https://www.britishgas.co.uk/myenergy_prod/api/direct/user/premise'
+        self._save_url(url)
+
     def get_nectar_details(self):
         url = 'https://www.britishgas.co.uk/mobile/Nectar/Summary'
         data = {

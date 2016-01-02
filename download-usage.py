@@ -10,7 +10,10 @@ client = MyEnergyClient(username=USERNAME, password=PASSWORD, proxies=PROXIES, d
 today = date.today()
 yesterday = today - timedelta(days=1)
 
+client.get_user_details()
+client.get_premise_details()
+client.get_nectar_details()
+
 client.get_usage_by_day_hourly(yesterday)
 client.get_usage_by_month_daily(yesterday)
 client.get_usage_by_year_monthly(yesterday)
-client.get_nectar_details()
