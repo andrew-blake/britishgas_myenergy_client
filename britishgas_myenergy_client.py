@@ -113,7 +113,7 @@ class MyEnergyClient(MyEnergyBase):
 
         data = {
             'channel': 'itouch',
-            'clientVersion': '6.1.7',
+            'clientVersion': '6.2.6',
             'deviceName': 'iPod Touch',
             'deviceVersion': 'iPod5.1',
             'iOSVersion': '8.1.2',
@@ -124,7 +124,7 @@ class MyEnergyClient(MyEnergyBase):
         req1 = requests.post(url, data=data, headers=self._get_headers(is_post=True), cookies=self._get_cookies(),
                              proxies=self.proxies, verify=self.ssl_verify)
 
-        self.response = json.loads(req1.content)
+        self.response = json.loads(req1.content.decode())
         self.is_authenticated = self.response['OAMAuthenticate']['isAuthenticated'] == u'TRUE'
         self.account_number = self.response['OAMAuthenticate']['Accounts'][0]['AccountNumber']
         self.ucrn = self.response['OAMAuthenticate']['Accounts'][0]['CustomerDetails']['Ucrn']
@@ -145,7 +145,7 @@ class MyEnergyClient(MyEnergyBase):
         #
         url = 'https://www.britishgas.co.uk/mobile/iphone/ser?'
         data = {
-            'clientVersion': '6.1.7',
+            'clientVersion': '6.2.6',
             'channel': 'itouch',
             'deviceVersion': 'iPod5,1',
             'accountNumber': '%s' % self.account_number,
@@ -154,7 +154,7 @@ class MyEnergyClient(MyEnergyBase):
 
         req2 = requests.post(url, data=data, cookies=self._get_cookies(), headers=self._get_headers(is_post=True),
                              proxies=self.proxies, verify=self.ssl_verify)
-        html = req2.content
+        html = req2.content.decode()
         token = None
 
         for line in html.split('\r\n'):
@@ -181,7 +181,7 @@ class MyEnergyClient(MyEnergyBase):
         filename = filename.replace('https://www.britishgas.co.uk/', '')
         filename = filename.replace('/', '-')
 
-        content_dict = json.loads(req.content)
+        content_dict = json.loads(req.content.decode())
         content = json.dumps(content_dict, indent=4)
         fp = open(filename, 'w')
         fp.write(content)
@@ -216,7 +216,7 @@ class MyEnergyClient(MyEnergyBase):
         url = 'https://www.britishgas.co.uk/mobile/Nectar/Summary'
         data = {
             'channel': 'itouch',
-            'clientVersion': '6.1.7',
+            'clientVersion': '6.2.6',
             'deviceVersion': 'iPod5.1',
             'iOSVersion': '8.1.2',
             'responseType': 'JSON',
